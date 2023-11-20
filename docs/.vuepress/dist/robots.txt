@@ -1,0 +1,6 @@
+User-agent: *
+Allow: *
+
+Sitemap: https://escolaidiomestarragona.cat/sitemap.xml
+
+Sitemap: https://escolaidiomestarragona.cat/sitemap.xml

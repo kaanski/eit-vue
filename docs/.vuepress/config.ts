@@ -1,6 +1,6 @@
 import { defaultTheme, defineUserConfig } from "vuepress";
 import { registerComponentsPlugin } from "@vuepress/plugin-register-components";
-import { searchPlugin } from "@vuepress/plugin-search";
+import { sitemapPlugin } from "vuepress-plugin-sitemap2";
 import { getDirname, path } from "@vuepress/utils";
 import { glob } from "glob";
 
@@ -8,20 +8,35 @@ let songFiles = glob
   .sync("docs/songs/**/*.md")
   .map((f) => f.replace("docs", "").replace("index.md", ""));
 
-import { description } from "../../package.json";
-
 const __dirname = getDirname(import.meta.url);
 
 export default defineUserConfig({
-  lang: "en-US",
   // Global title in HTML <head>.
   // If page has title (in frontmatter) or h1 then: <page title/h1> | <global title>
   // e.g <title>Vuepress-DecapCMS-Netlify | VueDN</title>
-  title: "VueDN",
+
+  locales: {
+    "/": {
+      lang: "ca",
+      description:
+        "Escola Idiomes Tarragona es una de las academias más antiguas de Tarragona.  Siempre ha ofrecido cursos de idiomas de alta calidad.",
+    },
+    "/en/": {
+      lang: "en",
+      description:
+        "Escola Idiomes Tarragona is one of the oldest academies in Tarragona offering high quality language courses.",
+    },
+    "/es/": {
+      lang: "es",
+      description:
+        "Escola Idiomes Tarragona es una de las academias más antiguas de Tarragona.  Siempre ha ofrecido cursos de idiomas de alta calidad.",
+    },
+  },
+
+  title: "Escola Idiomes Tarragona",
   // Global description in in HTML <head>.
   // If page has description (in frontmatter) then: <global description is replaced by <page description>
   // <meta name="description" content="...">
-  description: description,
   head: [
     [
       "script",
@@ -34,31 +49,25 @@ export default defineUserConfig({
   // theme and its config
   theme: defaultTheme({
     logo: "vue.png",
-    notFound: ["There's nothing here. If you're looking for DecapCMS, manually enter `/admin` to the root site path to navigate directly to it."],
+    notFound: [
+      "There's nothing here. If you're looking for DecapCMS, manually enter `/admin` to the root site path to navigate directly to it.",
+    ],
     navbar: [
-      {
-        text: "Songs",
-        // notice the trailing / (for the automatic next and prev links based on the sidebar)
-        link: "/songs/",
-      },
       {
         text: "Using this template",
         link: "/template/",
       },
-      {
-        text: "GitHub",
-        link: "https://github.com/NdagiStanley/VueDN",
-      },
     ],
-    // notice there's a difference between /songs and /songs/
-    // We have the /songs to enable this sidebar for /songs and /songs/ paths
-    sidebar: {
-      "/songs": [
-        {
-          text: "Songs",
-          children: songFiles,
-        },
-      ],
+    locales: {
+      "/": {
+        selectLanguageName: "Català",
+      },
+      "/en/": {
+        selectLanguageName: "English",
+      },
+      "/es/": {
+        selectLanguageName: "Español",
+      },
     },
   }),
 
@@ -77,9 +86,8 @@ export default defineUserConfig({
       // Absolute path to the components directory
       componentsDir: path.resolve(__dirname, "./components"),
     }),
-    searchPlugin({
-      // options
-      // Default shortcut is key '/'
+    sitemapPlugin({
+      hostname: "https://escolaidiomestarragona.cat",
     }),
   ],
 });
